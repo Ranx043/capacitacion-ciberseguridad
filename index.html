@@ -407,6 +407,75 @@
             font-weight: bold;
         }
 
+        /* Table of Contents */
+        .toc {
+            background: var(--bg-secondary);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid var(--accent-purple);
+        }
+
+        .toc h2 {
+            color: var(--accent-purple);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px 20px;
+            background: var(--bg-card);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .toc-item:hover {
+            background: var(--bg-primary);
+            transform: translateX(5px);
+            border-left-color: var(--accent-cyan);
+        }
+
+        .toc-item .toc-icon {
+            font-size: 1.5rem;
+        }
+
+        .toc-item .toc-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .toc-item .toc-title {
+            font-weight: bold;
+            color: var(--accent-cyan);
+        }
+
+        .toc-item .toc-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .toc-item.fase-0 { border-left-color: var(--accent-purple); }
+        .toc-item.fase-0:hover { border-left-color: var(--accent-purple); }
+        .toc-item.fase-1 { border-left-color: var(--accent-blue); }
+        .toc-item.fase-1:hover { border-left-color: var(--accent-blue); }
+        .toc-item.fase-2 { border-left-color: var(--accent-green); }
+        .toc-item.fase-2:hover { border-left-color: var(--accent-green); }
+        .toc-item.fase-3 { border-left-color: var(--accent-orange); }
+        .toc-item.fase-3:hover { border-left-color: var(--accent-orange); }
+
         /* Footer */
         .footer {
             text-align: center;
@@ -469,8 +538,78 @@
             </div>
         </header>
 
+        <!-- Índice -->
+        <nav class="toc">
+            <h2>📑 Índice del Plan</h2>
+            <div class="toc-grid">
+                <a href="#como-funciona" class="toc-item">
+                    <span class="toc-icon">📖</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Cómo Funciona</span>
+                        <span class="toc-desc">Metodología y checkpoints</span>
+                    </span>
+                </a>
+                <a href="#vision-general" class="toc-item">
+                    <span class="toc-icon">📋</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Visión General</span>
+                        <span class="toc-desc">Las 4 fases del plan</span>
+                    </span>
+                </a>
+                <a href="#fase-0" class="toc-item fase-0">
+                    <span class="toc-icon">🧠</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Fase 0: Herramientas IA</span>
+                        <span class="toc-desc">Gemini y NotebookLM</span>
+                    </span>
+                </a>
+                <a href="#fase-1" class="toc-item fase-1">
+                    <span class="toc-icon">💻</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Fase 1: Programación</span>
+                        <span class="toc-desc">Python y lógica</span>
+                    </span>
+                </a>
+                <a href="#fase-2" class="toc-item fase-2">
+                    <span class="toc-icon">🌐</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Fase 2: Redes</span>
+                        <span class="toc-desc">OSI, protocolos, Wireshark</span>
+                    </span>
+                </a>
+                <a href="#fase-3" class="toc-item fase-3">
+                    <span class="toc-icon">🔐</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Fase 3: Ciberseguridad</span>
+                        <span class="toc-desc">Amenazas y defensa</span>
+                    </span>
+                </a>
+                <a href="#proyecto-final" class="toc-item">
+                    <span class="toc-icon">🎓</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Proyecto Final</span>
+                        <span class="toc-desc">Análisis de red doméstica</span>
+                    </span>
+                </a>
+                <a href="#cronograma" class="toc-item">
+                    <span class="toc-icon">📅</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Cronograma</span>
+                        <span class="toc-desc">12 semanas + checkpoints</span>
+                    </span>
+                </a>
+                <a href="#recursos" class="toc-item">
+                    <span class="toc-icon">📚</span>
+                    <span class="toc-text">
+                        <span class="toc-title">Recursos</span>
+                        <span class="toc-desc">YouTube, certificaciones</span>
+                    </span>
+                </a>
+            </div>
+        </nav>
+
         <!-- Como funciona este plan -->
-        <section class="section">
+        <section class="section" id="como-funciona">
             <h2>📖 Cómo Funciona Este Plan</h2>
 
             <div class="diagram-container">
@@ -513,7 +652,7 @@ flowchart LR
         </section>
 
         <!-- Vision General -->
-        <section class="section">
+        <section class="section" id="vision-general">
             <h2>📋 Visión General del Plan</h2>
 
             <div class="diagram-container">
@@ -555,7 +694,7 @@ flowchart TB
         </section>
 
         <!-- FASE 0 -->
-        <section class="section">
+        <section class="section" id="fase-0">
             <h2>🧠 FASE 0: Mentalidad + Herramientas IA</h2>
             <p><em>"Aprender a Aprender con Inteligencia Artificial" - Semana 1</em></p>
 
@@ -690,7 +829,7 @@ flowchart LR
         </section>
 
         <!-- FASE 1 -->
-        <section class="section">
+        <section class="section" id="fase-1">
             <h2>💻 FASE 1: Fundamentos de Programación</h2>
             <p><em>"El lenguaje que hablan las computadoras" - Semanas 2-5</em></p>
 
@@ -846,7 +985,7 @@ flowchart LR
         </section>
 
         <!-- FASE 2 -->
-        <section class="section">
+        <section class="section" id="fase-2">
             <h2>🌐 FASE 2: Fundamentos de Redes</h2>
             <p><em>"El sistema circulatorio de Internet" - Semanas 6-8</em></p>
 
@@ -986,7 +1125,7 @@ sequenceDiagram
         </section>
 
         <!-- FASE 3 -->
-        <section class="section">
+        <section class="section" id="fase-3">
             <h2>🔐 FASE 3: Fundamentos de Ciberseguridad</h2>
             <p><em>"El arte de defender y atacar" - Semanas 9-12</em></p>
 
@@ -1188,7 +1327,7 @@ flowchart TB
         </section>
 
         <!-- Proyecto Final -->
-        <section class="section">
+        <section class="section" id="proyecto-final">
             <h2>🎓 Proyecto Final</h2>
 
             <div class="exercise">
@@ -1217,37 +1356,22 @@ flowchart TB
         </section>
 
         <!-- Cronograma -->
-        <section class="section">
+        <section class="section" id="cronograma">
             <h2>📅 Cronograma con Checkpoints</h2>
 
             <div class="diagram-container">
                 <div class="mermaid">
 gantt
-    title Plan de Capacitación - 12 Semanas
-    dateFormat  YYYY-MM-DD
+    title Plan 12 Semanas
+    dateFormat YYYY-MM-DD
     section Fase 0
-    Herramientas IA           :2026-02-01, 1w
-    👨‍🏫 Checkpoint 1          :milestone, 2026-02-07, 0d
+    IA Tools        :f0, 2026-02-01, 7d
     section Fase 1
-    Lógica programación       :2026-02-08, 1w
-    👨‍🏫 Checkpoint 2          :milestone, 2026-02-14, 0d
-    Python básico             :2026-02-15, 2w
-    👨‍🏫 Checkpoint 3          :milestone, 2026-02-28, 0d
-    Estructuras de datos      :2026-03-01, 1w
-    👨‍🏫 Checkpoint 4          :milestone, 2026-03-07, 0d
+    Python          :f1, after f0, 28d
     section Fase 2
-    Modelo OSI/TCP-IP         :2026-03-08, 1w
-    👨‍🏫 Checkpoint 5          :milestone, 2026-03-14, 0d
-    Protocolos                :2026-03-15, 1w
-    Práctica redes            :2026-03-22, 1w
-    👨‍🏫 Checkpoint 6          :milestone, 2026-03-28, 0d
+    Redes           :f2, after f1, 21d
     section Fase 3
-    Conceptos seguridad       :2026-03-29, 1w
-    👨‍🏫 Checkpoint 7          :milestone, 2026-04-04, 0d
-    Amenazas y defensa        :2026-04-05, 2w
-    👨‍🏫 Checkpoint 8          :milestone, 2026-04-18, 0d
-    Labs + Proyecto Final     :2026-04-19, 2w
-    👨‍🏫 Presentación Final    :milestone, 2026-05-02, 0d
+    Seguridad       :f3, after f2, 28d
                 </div>
             </div>
 
@@ -1343,7 +1467,7 @@ gantt
         </section>
 
         <!-- Recursos -->
-        <section class="section">
+        <section class="section" id="recursos">
             <h2>📚 Recursos Adicionales</h2>
 
             <h3>YouTube Channels</h3>
