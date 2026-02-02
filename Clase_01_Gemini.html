@@ -3,24 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clase: Gemini Tu Tutor IA | Capacitacion Ciberseguridad + IA</title>
+    <title>Clase 1: Google Gemini | Capacitacion Ciberseguridad + IA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #4285f4;
             --primary-dark: #1a73e8;
-            --secondary: #10b981;
-            --accent: #f59e0b;
-            --danger: #ef4444;
+            --secondary: #34a853;
+            --accent: #ea4335;
+            --warning: #fbbc04;
             --dark: #f1f5f9;
             --light: #000000;
             --gray: #94a3b8;
             --border: #1a1a1a;
             --card-bg: #0a0a0a;
-            --gemini: linear-gradient(135deg, #4285f4, #9b72cb, #d96570);
+            --gemini-gradient: linear-gradient(135deg, #4285f4, #9b72cb, #d96570);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -29,31 +33,107 @@
             line-height: 1.7;
         }
 
+        /* Header Hero */
         .hero {
-            background: var(--gemini);
+            background: var(--gemini-gradient);
             color: white;
-            padding: 60px 20px;
+            padding: 80px 20px;
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero h1 { font-size: 2.5rem; margin-bottom: 15px; }
-        .hero .subtitle { font-size: 1.2rem; opacity: 0.95; }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .hero .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+
         .badge {
             display: inline-block;
             background: rgba(255,255,255,0.2);
             padding: 8px 20px;
             border-radius: 50px;
             font-size: 0.9rem;
-            margin-top: 15px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        /* Navigation */
+        .nav-container {
+            background: #0a0a0a;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
 
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            padding: 15px 20px;
+            overflow-x: auto;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--gray);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+
+        .nav a:hover {
+            background: #111111;
+            color: var(--primary);
+        }
+
+        .nav a.gemini { border-left: 3px solid var(--primary); }
+        .nav a.ejercicios { border-left: 3px solid var(--accent); }
+
+        /* Main Content */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Section Styling */
         .section {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 35px;
-            margin-bottom: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             border: 1px solid var(--border);
         }
@@ -62,122 +142,105 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--border);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #111111;
         }
 
         .section-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
-            background: var(--gemini);
+            font-size: 1.5rem;
         }
 
-        h2 { font-size: 1.6rem; font-weight: 600; }
-        h3 { font-size: 1.2rem; font-weight: 600; margin: 25px 0 12px; color: var(--dark); }
-        h4 { font-size: 1rem; font-weight: 600; margin: 15px 0 8px; color: var(--gray); }
-        p { color: var(--gray); margin-bottom: 12px; }
-
-        .objetivo {
-            background: rgba(66, 133, 244, 0.15);
-            border-left: 4px solid var(--primary);
-            padding: 20px;
-            border-radius: 0 12px 12px 0;
-            margin: 20px 0;
+        .section-icon.gemini {
+            background: var(--gemini-gradient);
         }
 
-        .objetivo-title {
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
+        .section-icon.ejercicio {
+            background: linear-gradient(135deg, var(--accent), var(--warning));
+        }
+
+        .section-icon.recursos {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin: 30px 0 15px;
+        }
+
+        h4 {
             font-size: 1.1rem;
-        }
-
-        .tip {
-            background: rgba(16, 185, 129, 0.15);
-            border-left: 4px solid var(--secondary);
-            padding: 18px;
-            border-radius: 0 12px 12px 0;
-            margin: 18px 0;
-        }
-
-        .tip-title {
             font-weight: 600;
-            color: var(--secondary);
-            margin-bottom: 6px;
+            color: var(--gray);
+            margin: 20px 0 10px;
         }
 
-        .warning {
-            background: rgba(245, 158, 11, 0.15);
-            border-left: 4px solid var(--accent);
-            padding: 18px;
-            border-radius: 0 12px 12px 0;
-            margin: 18px 0;
+        p {
+            color: var(--gray);
+            margin-bottom: 15px;
         }
 
-        .warning-title {
-            font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 6px;
-        }
-
-        .code-block {
-            background: #111111;
-            color: #e2e8f0;
-            padding: 18px;
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            margin: 12px 0;
-            overflow-x: auto;
-            white-space: pre-wrap;
-            border: 1px solid #1a1a1a;
-        }
-
+        /* Feature Cards */
         .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 25px 0;
         }
 
         .feature-card {
             background: #111111;
             border-radius: 12px;
-            padding: 20px;
+            padding: 25px;
             border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(66, 133, 244, 0.2);
         }
 
         .feature-card h4 {
+            margin-top: 0;
             color: var(--dark);
-            margin: 0 0 10px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .feature-card p {
-            font-size: 0.9rem;
-            margin: 0;
+            font-size: 0.95rem;
+            margin-bottom: 0;
         }
 
+        /* Steps */
         .steps {
             counter-reset: step;
         }
 
         .step {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
+            gap: 20px;
+            margin-bottom: 25px;
+            padding: 20px;
             background: #111111;
-            border-radius: 10px;
-            border-left: 3px solid var(--primary);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
         }
 
         .step::before {
@@ -185,8 +248,8 @@
             content: counter(step);
             background: var(--primary);
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -196,406 +259,603 @@
         }
 
         .step-content h4 {
-            margin: 0 0 5px;
+            margin: 0 0 8px;
             color: var(--dark);
         }
 
         .step-content p {
             margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* Code/URL blocks */
+        .url-block {
+            background: #111111;
+            color: #e8eaed;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
+            margin: 15px 0;
+            overflow-x: auto;
+            border: 1px solid var(--border);
         }
 
-        ul, ol {
-            margin-left: 20px;
-            color: var(--gray);
+        .url-block a {
+            color: #8ab4f8;
         }
 
-        li { margin-bottom: 8px; }
-
-        .ejercicio-box {
-            background: rgba(168, 85, 247, 0.15);
-            border: 2px solid #a855f7;
-            border-radius: 14px;
-            padding: 25px;
-            margin: 25px 0;
+        /* Tips */
+        .tip {
+            background: rgba(52, 168, 83, 0.15);
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            border-radius: 0 12px 12px 0;
+            margin: 20px 0;
         }
 
-        .ejercicio-box h4 {
-            color: #c084fc;
-            font-size: 1.15rem;
-            margin: 0 0 15px;
+        .tip-title {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .ejercicio-box ol, .ejercicio-box ul {
+        .warning {
+            background: rgba(251, 188, 4, 0.15);
+            border-left: 4px solid var(--warning);
+        }
+
+        .warning .tip-title {
+            color: var(--warning);
+        }
+
+        /* Ejercicio Box */
+        .ejercicio {
+            background: rgba(233, 30, 99, 0.1);
+            border: 2px solid #e91e63;
+            border-radius: 16px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+
+        .ejercicio h4 {
+            color: #f48fb1;
+            font-size: 1.2rem;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ejercicio ol {
             margin-left: 20px;
             color: var(--dark);
         }
 
+        .ejercicio li {
+            margin-bottom: 10px;
+        }
+
+        /* Table */
         .comparison-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 0.9rem;
+            margin: 25px 0;
+            font-size: 0.95rem;
         }
 
         .comparison-table th {
             background: #111111;
-            color: var(--dark);
-            padding: 12px;
+            color: white;
+            padding: 15px;
             text-align: left;
             border: 1px solid var(--border);
         }
 
         .comparison-table td {
-            padding: 12px;
+            padding: 15px;
             border: 1px solid var(--border);
             color: var(--gray);
         }
 
-        a { color: var(--primary); }
+        .comparison-table tr:hover {
+            background: #111111;
+        }
 
-        .footer {
-            text-align: center;
-            padding: 30px 20px;
-            background: #0a0a0a;
+        .comparison-table .check {
+            color: var(--secondary);
+            font-weight: bold;
+        }
+
+        /* Lists */
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
             color: var(--gray);
         }
 
-        .footer .signature { font-size: 1.3rem; margin-bottom: 8px; }
+        /* Keyboard shortcuts */
+        kbd {
+            background: #111111;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 0 var(--border);
+            color: var(--dark);
+        }
 
+        /* Links */
+        a {
+            color: var(--primary);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #0a0a0a;
+            color: white;
+        }
+
+        .footer p {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .footer a {
+            color: var(--primary);
+        }
+
+        .signature {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 1.8rem; }
-            .section { padding: 22px; }
-            .features-grid { grid-template-columns: 1fr; }
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 25px;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .nav-container {
+                display: none;
+            }
+
+            .section {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
         }
     </style>
 </head>
 <body>
 
+<!-- Hero Section -->
 <header class="hero">
-    <h1>✨ Gemini: Tu Tutor IA</h1>
-    <p class="subtitle">Domina la herramienta de IA mas poderosa de Google</p>
-    <span class="badge">Duracion: 45 minutos | Nivel: Basico</span>
+    <div class="hero-content">
+        <h1>✨ Google Gemini</h1>
+        <p class="subtitle">Tu tutor de IA para potenciar tu aprendizaje y productividad</p>
+        <span class="badge">📚 Clase 1 | Capacitacion Ciberseguridad + IA</span>
+    </div>
 </header>
 
+<!-- Navigation -->
+<div class="nav-container">
+    <nav class="nav">
+        <a href="#intro" class="gemini">📖 Introduccion</a>
+        <a href="#gemini" class="gemini">✨ Que es Gemini</a>
+        <a href="#acceso" class="gemini">🚀 Como Acceder</a>
+        <a href="#caracteristicas" class="gemini">🧩 Caracteristicas</a>
+        <a href="#prompts" class="gemini">💬 Prompts</a>
+        <a href="#gems" class="gemini">🎯 Gems</a>
+        <a href="#ejercicios" class="ejercicios">📝 Ejercicios</a>
+        <a href="#recursos" class="gemini">🔗 Recursos</a>
+    </nav>
+</div>
+
+<!-- Main Content -->
 <main class="container">
 
-    <!-- Objetivo -->
-    <section class="section">
+    <!-- Introduccion -->
+    <section id="intro" class="section">
         <div class="section-header">
-            <div class="section-icon">🎯</div>
-            <h2>Objetivo de la Clase</h2>
+            <div class="section-icon gemini">📖</div>
+            <h2>Introduccion</h2>
         </div>
 
-        <div class="objetivo">
-            <div class="objetivo-title">Al completar esta clase podras:</div>
-            <ul>
-                <li>Entender que es Gemini y como funciona</li>
-                <li>Acceder y configurar tu cuenta de Gemini</li>
-                <li>Usar Gemini como tutor personal para aprender cualquier tema</li>
-                <li>Crear Gems (asistentes personalizados) para tareas especificas</li>
-                <li>Usar Canvas para escribir documentos con ayuda de IA</li>
-            </ul>
-        </div>
-    </section>
-
-    <!-- Que es Gemini -->
-    <section class="section">
-        <div class="section-header">
-            <div class="section-icon">✨</div>
-            <h2>Que es Google Gemini?</h2>
-        </div>
-
-        <p>Gemini es el asistente de inteligencia artificial mas avanzado de Google. Piensa en el como un tutor personal que:</p>
+        <p>En esta clase aprenderas a utilizar <strong>Google Gemini</strong>, el asistente de IA mas avanzado de Google, como tu tutor personal para aprender cualquier tema.</p>
 
         <div class="features-grid">
             <div class="feature-card">
-                <h4>🧠 Razona</h4>
-                <p>Puede analizar problemas complejos paso a paso y explicarte su razonamiento</p>
+                <h4>✨ Tutor Personal 24/7</h4>
+                <p>Gemini puede explicarte cualquier concepto, desde programacion hasta ciberseguridad, adaptandose a tu nivel.</p>
             </div>
             <div class="feature-card">
-                <h4>📝 Escribe</h4>
-                <p>Genera textos, resúmenes, emails, código y cualquier tipo de contenido</p>
+                <h4>🧠 Razonamiento Avanzado</h4>
+                <p>Capaz de resolver problemas complejos paso a paso, mostrando su proceso de pensamiento.</p>
             </div>
             <div class="feature-card">
-                <h4>🖼️ Ve</h4>
-                <p>Analiza imagenes, screenshots, documentos escaneados y fotos</p>
-            </div>
-            <div class="feature-card">
-                <h4>🔍 Investiga</h4>
-                <p>Busca informacion actualizada en internet y te da respuestas con fuentes</p>
+                <h4>🔗 Conectado a Google</h4>
+                <p>Integrado con Gmail, Drive, YouTube y mas para respuestas personalizadas basadas en tu informacion.</p>
             </div>
         </div>
 
         <div class="tip">
-            <div class="tip-title">💡 Diferencia con ChatGPT</div>
-            <p>Gemini esta integrado con todo el ecosistema de Google: puede buscar en tu Gmail, revisar tu Google Drive, ver tus fotos y mas. Es como tener un asistente que conoce TODO tu mundo digital.</p>
+            <div class="tip-title">💡 Objetivo de la clase</div>
+            <p>Al finalizar, podras usar Gemini como tu tutor personal de IA, crear prompts efectivos, y utilizar Gems para tareas especificas.</p>
         </div>
     </section>
 
-    <!-- Como acceder -->
-    <section class="section">
+    <!-- QUE ES GEMINI -->
+    <section id="gemini" class="section">
         <div class="section-header">
-            <div class="section-icon">🚀</div>
+            <div class="section-icon gemini">✨</div>
+            <h2>Que es Google Gemini?</h2>
+        </div>
+
+        <p>Gemini es el asistente de IA mas avanzado de Google. A diferencia de un simple chatbot, Gemini puede:</p>
+        <ul>
+            <li>Razonar sobre problemas complejos con <strong>Gemini 2.0 Pro</strong></li>
+            <li>Analizar imagenes, documentos y codigo</li>
+            <li>Conectarse con tus apps de Google (Gmail, Drive, YouTube)</li>
+            <li>Crear contenido escrito, visual y hasta video</li>
+            <li>Recordar contexto de conversaciones anteriores</li>
+        </ul>
+
+        <div class="warning">
+            <div class="tip-title">⚠️ Importante</div>
+            <p>Gemini es una herramienta que <strong>potencia</strong> tu trabajo, no lo reemplaza. Siempre verifica la informacion importante y usa tu criterio.</p>
+        </div>
+    </section>
+
+    <!-- COMO ACCEDER -->
+    <section id="acceso" class="section">
+        <div class="section-header">
+            <div class="section-icon gemini">🚀</div>
             <h2>Como Acceder a Gemini</h2>
         </div>
 
         <div class="steps">
             <div class="step">
                 <div class="step-content">
-                    <h4>Ve a gemini.google.com</h4>
-                    <p>Abre tu navegador y escribe la direccion. Inicia sesion con tu cuenta de Google.</p>
+                    <h4>Ir al portal de Gemini</h4>
+                    <p>Visita <strong>gemini.google.com</strong> e inicia sesion con tu cuenta de Google</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-content">
-                    <h4>Acepta los terminos</h4>
-                    <p>La primera vez te pedira aceptar los terminos de uso. Lee y acepta para continuar.</p>
+                    <h4>Configurar extensiones (opcional)</h4>
+                    <p>Ve a ⚙️ Configuracion → Extensiones → Activa Gmail, Drive, YouTube, Maps para respuestas personalizadas</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-content">
-                    <h4>Empieza a conversar!</h4>
-                    <p>Ya puedes escribir tu primera pregunta en el chat. Gemini respondera al instante.</p>
+                    <h4>¡Empieza a conversar!</h4>
+                    <p>Escribe tu primera pregunta o solicitud en el chat</p>
                 </div>
             </div>
         </div>
 
-        <div class="code-block">🔗 https://gemini.google.com</div>
-
-        <div class="warning">
-            <div class="warning-title">⚠️ Importante</div>
-            <p>La version gratuita tiene limites de uso diario. Para este curso, la version gratuita es mas que suficiente.</p>
-        </div>
-    </section>
-
-    <!-- Gemini como Tutor -->
-    <section class="section">
-        <div class="section-header">
-            <div class="section-icon">👨‍🏫</div>
-            <h2>Gemini como Tu Tutor Personal</h2>
+        <div class="url-block">
+            🔗 <a href="https://gemini.google.com" target="_blank">https://gemini.google.com</a>
         </div>
 
-        <p>La clave para usar Gemini como tutor es darle un ROL especifico. Mira estos ejemplos:</p>
-
-        <h3>Ejemplo 1: Aprender un concepto nuevo</h3>
-        <div class="code-block">Eres un profesor experto en redes de computadoras.
-
-Explícame qué es una dirección IP como si tuviera 10 años.
-Usa analogías con cosas de la vida real.
-Al final, hazme una pregunta para verificar que entendí.</div>
-
-        <h3>Ejemplo 2: Resolver un problema</h3>
-        <div class="code-block">Eres un experto en ciberseguridad.
-
-Mi computadora está muy lenta y sospecho que puede tener malware.
-
-Dame una lista de pasos para diagnosticar el problema, ordenados de más fácil a más difícil.</div>
-
-        <h3>Ejemplo 3: Preparar para un examen</h3>
-        <div class="code-block">Eres un profesor que me está preparando para un examen de Python.
-
-Hazme 5 preguntas de práctica sobre:
-- Variables
-- Condicionales (if/else)
-- Bucles (for/while)
-
-Después de cada respuesta mía, dime si está bien o mal y explícame por qué.</div>
+        <h3>Planes y precios</h3>
+        <table class="comparison-table">
+            <tr>
+                <th>Plan</th>
+                <th>Precio</th>
+                <th>Caracteristicas</th>
+            </tr>
+            <tr>
+                <td><strong>Gratuito</strong></td>
+                <td>$0</td>
+                <td>Gemini 2.0 Flash, uso limitado, funciones basicas</td>
+            </tr>
+            <tr>
+                <td><strong>AI Pro</strong></td>
+                <td>$19.99/mes</td>
+                <td>Gemini 2.0 Pro, Personal Intelligence, Gems, Canvas, 5x mas limites</td>
+            </tr>
+            <tr>
+                <td><strong>AI Ultra</strong></td>
+                <td>$249.99/mes</td>
+                <td>Gemini 2.0 Deep Think, maxima capacidad de razonamiento</td>
+            </tr>
+        </table>
 
         <div class="tip">
-            <div class="tip-title">💡 Técnica del "Profesor Socrático"</div>
-            <p>En vez de pedirle que te de la respuesta, pídele que te haga preguntas para guiarte. Así aprendes mejor porque PIENSAS en vez de solo leer.</p>
+            <div class="tip-title">💡 Recomendacion</div>
+            <p>Para este curso, el plan <strong>gratuito es suficiente</strong>. Si decides continuar usando Gemini intensivamente, AI Pro vale la pena.</p>
         </div>
     </section>
 
-    <!-- Gems -->
-    <section class="section">
+    <!-- CARACTERISTICAS -->
+    <section id="caracteristicas" class="section">
         <div class="section-header">
-            <div class="section-icon">💎</div>
+            <div class="section-icon gemini">🧩</div>
+            <h2>Caracteristicas Principales (2026)</h2>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <h4>🎯 Gems (Asistentes personalizados)</h4>
+                <p>Crea mini-asistentes con instrucciones especificas. Ejemplo: un Gem para revisar gramatica, otro para explicar conceptos de ciberseguridad.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📝 Gemini Canvas</h4>
+                <p>Espacio de escritura colaborativa con la IA. Selecciona texto especifico y pide cambios ("hazlo mas formal", "simplifica esto").</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧠 Personal Intelligence</h4>
+                <p>Conecta Gmail, Fotos, YouTube y Search. Gemini entiende TU contexto personal y da respuestas personalizadas.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🔍 Deep Research</h4>
+                <p>Gemini investiga un tema profundamente, consultando multiples fuentes y generando un reporte completo.</p>
+            </div>
+            <div class="feature-card">
+                <h4>💻 Analisis de Codigo</h4>
+                <p>Revisa, explica, corrige y mejora codigo en cualquier lenguaje de programacion.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🖼️ Analisis de Imagenes</h4>
+                <p>Sube imagenes y Gemini las analiza, describe, extrae texto, o responde preguntas sobre ellas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROMPTS EFECTIVOS -->
+    <section id="prompts" class="section">
+        <div class="section-header">
+            <div class="section-icon gemini">💬</div>
+            <h2>Prompts Efectivos</h2>
+        </div>
+
+        <p>La calidad de las respuestas de Gemini depende de como formules tus preguntas. Usa esta formula:</p>
+
+        <div class="tip">
+            <div class="tip-title">📝 Formula: ROL + CONTEXTO + TAREA + FORMATO</div>
+            <p><strong>ROL:</strong> Quien quieres que sea Gemini<br>
+            <strong>CONTEXTO:</strong> Tu situacion o antecedentes<br>
+            <strong>TAREA:</strong> Que quieres que haga<br>
+            <strong>FORMATO:</strong> Como quieres la respuesta</p>
+        </div>
+
+        <h3>Ejemplos de prompts efectivos</h3>
+
+        <h4>Para aprender un concepto:</h4>
+        <div class="url-block">
+"Actua como un profesor de ciberseguridad (ROL). Soy principiante sin experiencia tecnica (CONTEXTO). Explicame que es el phishing y como protegerme (TAREA). Usa ejemplos simples y una lista de consejos (FORMATO)."
+        </div>
+
+        <h4>Para analisis de codigo:</h4>
+        <div class="url-block">
+"Eres un desarrollador senior de Python (ROL). Estoy aprendiendo a programar (CONTEXTO). Revisa este codigo, identifica errores y sugiere mejoras (TAREA). Explica cada cambio que hagas (FORMATO): [pegar codigo]"
+        </div>
+
+        <h4>Para resolver problemas:</h4>
+        <div class="url-block">
+"Actua como un consultor de seguridad informatica (ROL). Mi empresa tiene 20 empleados y usamos Google Workspace (CONTEXTO). Necesito un plan basico de seguridad (TAREA). Dame pasos numerados por prioridad (FORMATO)."
+        </div>
+
+        <h4>Para investigacion:</h4>
+        <div class="url-block">
+"Eres un investigador experto (ROL). Necesito entender las tendencias en ciberataques 2026 (CONTEXTO). Resume los 5 tipos de ataques mas comunes (TAREA). Incluye estadisticas si las tienes (FORMATO)."
+        </div>
+
+        <h3>Tecnica: Chain of Thought</h3>
+        <p>Para problemas complejos, pide a Gemini que "piense paso a paso":</p>
+
+        <div class="url-block">
+"Piensa paso a paso. Tengo este problema de red: [descripcion]. Analiza las posibles causas, descarta las menos probables, y dame un diagnostico con solucion."
+        </div>
+
+        <div class="warning">
+            <div class="tip-title">⚠️ Cuidado con las alucinaciones</div>
+            <p>Gemini puede inventar informacion que suena convincente pero es falsa. Siempre verifica datos importantes, especialmente fechas, estadisticas y citas.</p>
+        </div>
+    </section>
+
+    <!-- GEMS -->
+    <section id="gems" class="section">
+        <div class="section-header">
+            <div class="section-icon gemini">🎯</div>
             <h2>Gems: Asistentes Personalizados</h2>
         </div>
 
-        <p>Los <strong>Gems</strong> son mini-asistentes que creas con instrucciones específicas. En vez de escribir el mismo prompt cada vez, guardas las instrucciones y solo las usas.</p>
+        <p>Los Gems son mini-asistentes con instrucciones permanentes. En lugar de repetir el contexto cada vez, creas un Gem una vez y lo usas siempre.</p>
 
         <h3>Como crear un Gem</h3>
         <div class="steps">
             <div class="step">
                 <div class="step-content">
                     <h4>Abre el Gem Manager</h4>
-                    <p>En el menú lateral de Gemini, busca "Gem manager" o "Mis Gems"</p>
+                    <p>En Gemini, haz clic en "Gem manager" en el menu lateral izquierdo</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-content">
                     <h4>Crea un nuevo Gem</h4>
-                    <p>Dale un nombre descriptivo como "Tutor de Python" o "Corrector de Español"</p>
+                    <p>Haz clic en "Create new Gem" y dale un nombre descriptivo</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-content">
                     <h4>Escribe las instrucciones</h4>
-                    <p>Define exactamente cómo quieres que se comporte. Entre más específico, mejor.</p>
+                    <p>Define el ROL, comportamiento, y formato de respuesta que quieres</p>
                 </div>
             </div>
             <div class="step">
                 <div class="step-content">
                     <h4>Guarda y usa</h4>
-                    <p>Ahora puedes activar ese Gem cuando lo necesites con un solo clic.</p>
+                    <p>Guarda el Gem. Ahora puedes seleccionarlo desde el menu cuando lo necesites</p>
                 </div>
             </div>
         </div>
 
-        <h3>Ejemplo de Gem: Tutor de Ciberseguridad</h3>
-        <div class="code-block">Eres un tutor experto en ciberseguridad para principiantes.
+        <h3>Ejemplo: Gem "Tutor de Ciberseguridad"</h3>
+        <div class="url-block">
+Nombre: Tutor Ciberseguridad
 
-REGLAS:
-1. Explica conceptos de forma simple, sin jerga técnica innecesaria
-2. Siempre usa ejemplos del mundo real
-3. Después de explicar algo, pregúntame si entendí
-4. Si me equivoco, no me des la respuesta - guíame con preguntas
-5. Relaciona todo con la seguridad práctica (proteger mi PC, mis cuentas, etc.)
+Instrucciones:
+"Eres un profesor experto en ciberseguridad con 15 años de experiencia.
+Tu estudiante es un principiante que esta tomando un curso de ciberseguridad.
 
-FORMATO:
-- Usa emojis para hacer las explicaciones más visuales
-- Divide conceptos largos en pasos numerados
-- Al final de cada tema, dame un "tip práctico" que pueda aplicar HOY</div>
+Cuando te haga preguntas:
+1. Explica el concepto de forma simple, sin jerga tecnica innecesaria
+2. Da un ejemplo practico del mundo real
+3. Menciona por que es importante para la seguridad
+4. Al final, hazme una pregunta para verificar que entendi
 
-        <div class="ejercicio-box">
-            <h4>🎯 Ejercicio: Crea tu primer Gem</h4>
+Si no sabes algo, dilo claramente. No inventes informacion."
+        </div>
+
+        <h3>Ideas de Gems utiles</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <h4>📝 Corrector de Español</h4>
+                <p>Corrige ortografia, gramatica y puntuacion. Explica brevemente cada correccion.</p>
+            </div>
+            <div class="feature-card">
+                <h4>💻 Revisor de Codigo</h4>
+                <p>Revisa codigo, identifica bugs, sugiere mejoras de rendimiento y seguridad.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📋 Resumidor</h4>
+                <p>Resume textos largos en puntos clave. Identifica lo mas importante.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🎓 Preparador de Examenes</h4>
+                <p>Genera preguntas de practica sobre cualquier tema para estudiar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- EJERCICIOS -->
+    <section id="ejercicios" class="section">
+        <div class="section-header">
+            <div class="section-icon ejercicio">📝</div>
+            <h2>Ejercicios Practicos</h2>
+        </div>
+
+        <div class="ejercicio">
+            <h4>🎯 Ejercicio 1: Tu primer prompt efectivo</h4>
             <ol>
-                <li>Ve a gemini.google.com</li>
-                <li>Abre el Gem Manager</li>
-                <li>Crea un Gem llamado "Mi Tutor de [tema que quieras aprender]"</li>
-                <li>Copia las instrucciones del ejemplo anterior y modifícalas para tu tema</li>
-                <li>Guarda y pruébalo haciéndole una pregunta</li>
+                <li>Abre <a href="https://gemini.google.com" target="_blank">gemini.google.com</a></li>
+                <li>Escribe un prompt usando la formula ROL + CONTEXTO + TAREA + FORMATO</li>
+                <li>Tema: Pide que te explique algun concepto de ciberseguridad que no entiendas bien</li>
+                <li>Evalua la respuesta: ¿Fue clara? ¿Necesitas mas detalle?</li>
+                <li>Haz preguntas de seguimiento para profundizar</li>
+            </ol>
+        </div>
+
+        <div class="ejercicio">
+            <h4>🎯 Ejercicio 2: Crea tu primer Gem</h4>
+            <ol>
+                <li>Abre <a href="https://gemini.google.com" target="_blank">gemini.google.com</a></li>
+                <li>Haz clic en "Gem manager" en el menu lateral</li>
+                <li>Crea un nuevo Gem llamado "Tutor Personal"</li>
+                <li>Copia las instrucciones del ejemplo "Tutor de Ciberseguridad" de arriba</li>
+                <li>Guarda y pruebalo preguntando: "¿Que es un firewall y para que sirve?"</li>
+                <li>Verifica que responda siguiendo el formato que definiste</li>
+            </ol>
+        </div>
+
+        <div class="ejercicio">
+            <h4>🎯 Ejercicio 3: Chain of Thought</h4>
+            <ol>
+                <li>Piensa en un problema complejo (puede ser de trabajo, estudio, o vida diaria)</li>
+                <li>Escribe un prompt que empiece con "Piensa paso a paso..."</li>
+                <li>Ejemplo: "Piensa paso a paso. Quiero aprender programacion en Python para ciberseguridad. Tengo 2 horas diarias disponibles. ¿Cual seria un plan de estudio de 3 meses?"</li>
+                <li>Observa como Gemini desglosa el problema en pasos logicos</li>
+            </ol>
+        </div>
+
+        <div class="ejercicio">
+            <h4>🎯 Ejercicio 4: Detectar alucinaciones</h4>
+            <ol>
+                <li>Pregunta a Gemini algo muy especifico que puedas verificar</li>
+                <li>Ejemplo: "¿Quien escribio el libro 'El algoritmo del destino' publicado en 2018?"</li>
+                <li>Busca en Google si la informacion es correcta</li>
+                <li>Si Gemini invento algo, pidele: "¿Estas seguro? Verifica esa informacion."</li>
+                <li>Aprende a reconocer cuando Gemini esta "inventando"</li>
             </ol>
         </div>
     </section>
 
-    <!-- Canvas -->
-    <section class="section">
+    <!-- RECURSOS -->
+    <section id="recursos" class="section">
         <div class="section-header">
-            <div class="section-icon">📝</div>
-            <h2>Canvas: Escribe con IA</h2>
+            <div class="section-icon recursos">🔗</div>
+            <h2>Recursos adicionales</h2>
         </div>
 
-        <p><strong>Canvas</strong> es como un Google Docs donde Gemini te ayuda a escribir. Es perfecto para:</p>
-
+        <h3>Enlaces oficiales</h3>
         <ul>
-            <li>Escribir reportes o ensayos</li>
-            <li>Crear emails profesionales</li>
-            <li>Redactar documentación técnica</li>
-            <li>Corregir y mejorar textos existentes</li>
+            <li>🔗 <a href="https://gemini.google.com" target="_blank">Gemini</a> — gemini.google.com</li>
+            <li>🔗 <a href="https://support.google.com/gemini" target="_blank">Centro de ayuda de Gemini</a></li>
+            <li>🔗 <a href="https://blog.google/products/gemini/" target="_blank">Blog oficial de Gemini</a></li>
         </ul>
 
-        <h3>Como usar Canvas</h3>
-        <div class="steps">
-            <div class="step">
-                <div class="step-content">
-                    <h4>Pide algo que requiera escribir</h4>
-                    <p>Ejemplo: "Escríbeme un email solicitando una reunión con mi jefe"</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-content">
-                    <h4>Gemini abre Canvas</h4>
-                    <p>Verás el texto en un editor donde puedes modificarlo</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-content">
-                    <h4>Selecciona y pide cambios</h4>
-                    <p>Selecciona una parte del texto y pide: "hazlo más formal" o "simplifica esto"</p>
-                </div>
-            </div>
-            <div class="step">
-                <div class="step-content">
-                    <h4>Exporta cuando termines</h4>
-                    <p>Copia el texto final o expórtalo a Google Docs</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="tip">
-            <div class="tip-title">💡 Truco Pro</div>
-            <p>Puedes pegar un texto tuyo y pedirle a Canvas que lo mejore: "Revisa este texto y hazlo más claro y profesional, pero mantén mi estilo".</p>
-        </div>
-    </section>
-
-    <!-- Planes -->
-    <section class="section">
-        <div class="section-header">
-            <div class="section-icon">💰</div>
-            <h2>Planes de Gemini</h2>
-        </div>
-
+        <h3>Atajos de teclado utiles</h3>
         <table class="comparison-table">
             <tr>
-                <th>Plan</th>
-                <th>Precio</th>
-                <th>Que incluye</th>
+                <th>Accion</th>
+                <th>Atajo</th>
             </tr>
             <tr>
-                <td><strong>Gratuito</strong></td>
-                <td>$0</td>
-                <td>Gemini 2.0 Flash, uso limitado, suficiente para aprender</td>
+                <td>Nueva conversacion</td>
+                <td><kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd></td>
             </tr>
             <tr>
-                <td><strong>AI Pro</strong></td>
-                <td>$19.99/mes</td>
-                <td>Gemini 3 Pro, Gems ilimitados, Canvas avanzado, 5x más uso</td>
+                <td>Enviar mensaje</td>
+                <td><kbd>Enter</kbd></td>
             </tr>
             <tr>
-                <td><strong>AI Ultra</strong></td>
-                <td>$249.99/mes</td>
-                <td>Gemini 3 Deep Think, máximo razonamiento (para profesionales)</td>
+                <td>Nueva linea (sin enviar)</td>
+                <td><kbd>Shift</kbd> + <kbd>Enter</kbd></td>
+            </tr>
+            <tr>
+                <td>Copiar respuesta</td>
+                <td><kbd>Ctrl</kbd> + <kbd>C</kbd> (seleccionar primero)</td>
             </tr>
         </table>
 
         <div class="tip">
-            <div class="tip-title">💡 Recomendacion para este curso</div>
-            <p>La version <strong>gratuita</strong> es perfecta para aprender. Cuando domines las técnicas básicas y uses Gemini diariamente, considera AI Pro.</p>
-        </div>
-    </section>
-
-    <!-- Resumen -->
-    <section class="section">
-        <div class="section-header">
-            <div class="section-icon">📋</div>
-            <h2>Resumen de la Clase</h2>
-        </div>
-
-        <div class="features-grid">
-            <div class="feature-card">
-                <h4>✅ Gemini es...</h4>
-                <p>Tu tutor IA personal que razona, escribe, ve imágenes y busca información</p>
-            </div>
-            <div class="feature-card">
-                <h4>✅ Gems son...</h4>
-                <p>Asistentes personalizados que guardas con instrucciones específicas</p>
-            </div>
-            <div class="feature-card">
-                <h4>✅ Canvas es...</h4>
-                <p>Editor de texto colaborativo donde Gemini te ayuda a escribir</p>
-            </div>
-            <div class="feature-card">
-                <h4>✅ La clave es...</h4>
-                <p>Darle un ROL específico y ser claro en lo que necesitas</p>
-            </div>
-        </div>
-
-        <div class="objetivo">
-            <div class="objetivo-title">Proximo paso:</div>
-            <p>Completa las <strong>Prácticas de Gemini</strong> para dominar los prompts y la técnica Chain of Thought. Luego toma el <strong>Quiz de 20 preguntas</strong> para verificar tu aprendizaje.</p>
+            <div class="tip-title">📌 Para la proxima practica</div>
+            <p>Practica los ejercicios de esta clase. En la siguiente practica profundizaremos en la tecnica "Chain of Thought" y como detectar alucinaciones de IA.</p>
         </div>
     </section>
 
 </main>
 
+<!-- Footer -->
 <footer class="footer">
     <div class="signature">🔥💀📜🙏</div>
+    <p>📚 Clase 1: Google Gemini | Capacitacion Ciberseguridad + IA</p>
     <p>Creado por <strong>Randhy Paul</strong> para <strong>Gilberto Amadis</strong></p>
-    <p>Material de <a href="https://soulcore.dev" target="_blank">SOUL CORE</a> - 2026</p>
+    <p>Material de <a href="https://soulcore.dev" target="_blank">SOUL CORE</a> — 2026</p>
 </footer>
 
 </body>
