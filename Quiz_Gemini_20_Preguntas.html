@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz: Fundamentos de IA y Gemini | Curso de Hilberto</title>
+    <title>Quiz: Fundamentos de IA y Gemini | Capacitacion Ciberseguridad + IA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -72,14 +72,111 @@
 
         .instrucciones li { margin-bottom: 8px; }
 
+        /* Score Panel */
+        .score-panel {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 2px solid var(--border);
+            text-align: center;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+
+        .score-panel.passed { border-color: var(--secondary); background: rgba(16, 185, 129, 0.1); }
+        .score-panel.failed { border-color: var(--danger); background: rgba(239, 68, 68, 0.1); }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .score-display.passed { color: var(--secondary); }
+        .score-display.failed { color: var(--danger); }
+        .score-display.pending { color: var(--gray); }
+
+        .score-message {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gemini);
+            color: white;
+        }
+
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(66, 133, 244, 0.4); }
+
+        .btn-secondary {
+            background: #1a1a1a;
+            color: var(--dark);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover { border-color: var(--primary); }
+
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+            border: 2px solid var(--danger);
+        }
+
+        .btn-danger:hover { background: var(--danger); color: white; }
+
+        .progress-bar {
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gemini);
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--gray);
+            margin-top: 8px;
+        }
+
+        /* Question Cards */
         .question-card {
             background: var(--card-bg);
             border-radius: 16px;
             padding: 30px;
             margin-bottom: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            transition: border-color 0.3s;
         }
+
+        .question-card.correct { border-color: var(--secondary); }
+        .question-card.incorrect { border-color: var(--danger); }
 
         .question-header {
             display: flex;
@@ -101,6 +198,11 @@
             font-size: 1.1rem;
         }
 
+        .question-status {
+            margin-left: auto;
+            font-size: 1.5rem;
+        }
+
         .question-type {
             font-size: 0.8rem;
             padding: 4px 12px;
@@ -108,20 +210,9 @@
             font-weight: 600;
         }
 
-        .type-teoria {
-            background: rgba(66, 133, 244, 0.2);
-            color: #60a5fa;
-        }
-
-        .type-practica {
-            background: rgba(16, 185, 129, 0.2);
-            color: #34d399;
-        }
-
-        .type-gemini {
-            background: rgba(168, 85, 247, 0.2);
-            color: #c084fc;
-        }
+        .type-teoria { background: rgba(66, 133, 244, 0.2); color: #60a5fa; }
+        .type-practica { background: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .type-gemini { background: rgba(168, 85, 247, 0.2); color: #c084fc; }
 
         .question-text {
             font-size: 1.1rem;
@@ -131,11 +222,7 @@
             line-height: 1.6;
         }
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .options { display: flex; flex-direction: column; gap: 12px; }
 
         .option {
             display: flex;
@@ -149,10 +236,10 @@
             transition: all 0.2s;
         }
 
-        .option:hover {
-            border-color: var(--primary);
-            background: rgba(66, 133, 244, 0.1);
-        }
+        .option:hover { border-color: var(--primary); background: rgba(66, 133, 244, 0.1); }
+        .option.selected { border-color: var(--primary); background: rgba(66, 133, 244, 0.15); }
+        .option.correct-answer { border-color: var(--secondary); background: rgba(16, 185, 129, 0.15); }
+        .option.wrong-answer { border-color: var(--danger); background: rgba(239, 68, 68, 0.15); }
 
         .option input[type="radio"] {
             width: 20px;
@@ -161,10 +248,18 @@
             accent-color: var(--primary);
         }
 
-        .option-text {
-            flex: 1;
-            color: var(--dark);
+        .option-text { flex: 1; color: var(--dark); }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
         }
+
+        .feedback.show { display: block; }
+        .feedback.correct { background: rgba(16, 185, 129, 0.15); border-left: 4px solid var(--secondary); }
+        .feedback.incorrect { background: rgba(239, 68, 68, 0.15); border-left: 4px solid var(--danger); }
 
         .hint {
             background: rgba(66, 133, 244, 0.15);
@@ -177,12 +272,12 @@
 
         .hint-title {
             font-weight: 600;
-            color: var(--primary-dark);
+            color: var(--primary);
             margin-bottom: 5px;
         }
 
         .code-block {
-            background: #1e293b;
+            background: #111111;
             color: #e2e8f0;
             padding: 15px;
             border-radius: 8px;
@@ -191,56 +286,23 @@
             margin: 10px 0;
             overflow-x: auto;
             white-space: pre-wrap;
-        }
-
-        .submit-section {
-            background: white;
-            border-radius: 16px;
-            padding: 30px;
-            margin-top: 30px;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-            border: 1px solid var(--border);
-        }
-
-        .submit-section h3 {
-            margin-bottom: 15px;
-        }
-
-        .submit-section p {
-            color: var(--gray);
-            margin-bottom: 20px;
-        }
-
-        .entrega-list {
-            text-align: left;
-            background: var(--light);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-
-        .entrega-list ol {
-            margin-left: 20px;
-            color: var(--dark);
-        }
-
-        .entrega-list li {
-            margin-bottom: 10px;
+            border: 1px solid #1a1a1a;
         }
 
         .footer {
             text-align: center;
             padding: 30px 20px;
-            background: var(--dark);
-            color: white;
+            background: #0a0a0a;
+            color: var(--gray);
         }
 
-        .footer p { color: rgba(255,255,255,0.7); }
+        .footer .signature { font-size: 1.3rem; margin-bottom: 8px; }
 
         @media (max-width: 768px) {
             .hero h1 { font-size: 1.8rem; }
             .question-card { padding: 20px; }
+            .score-display { font-size: 2rem; }
+            .btn { padding: 10px 20px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -254,289 +316,195 @@
 
 <main class="container">
 
+    <!-- PANEL DE PUNTUACION -->
+    <div class="score-panel" id="scorePanel">
+        <div class="score-display pending" id="scoreDisplay">--/20</div>
+        <div class="score-message" id="scoreMessage">Responde las preguntas y verifica tus respuestas</div>
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="verificarRespuestas()">✓ Verificar Respuestas</button>
+            <button class="btn btn-secondary" onclick="guardarProgreso()">💾 Guardar Progreso</button>
+            <button class="btn btn-danger" onclick="reiniciarQuiz()">↺ Reiniciar</button>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progressText">0 de 20 preguntas respondidas</div>
+    </div>
+
     <!-- INSTRUCCIONES -->
     <div class="instrucciones">
-        <h2>📋 Instrucciones Importantes</h2>
+        <h2>📋 Instrucciones</h2>
         <ul>
             <li><strong>Este quiz requiere que uses Gemini</strong> para resolver algunas preguntas</li>
             <li>Las preguntas marcadas con <span class="question-type type-gemini">USA GEMINI</span> necesitan que apliques lo aprendido</li>
-            <li>No es trampa usar Gemini - es el objetivo. Demuestra que sabes usarlo correctamente</li>
-            <li>Anota tus respuestas (A, B, C, o D) en un documento</li>
+            <li>Tu progreso se guarda automaticamente en este navegador</li>
             <li>Para aprobar necesitas <strong>16/20 correctas (80%)</strong></li>
         </ul>
     </div>
 
     <!-- PREGUNTA 1 -->
-    <div class="question-card">
+    <div class="question-card" data-question="1">
         <div class="question-header">
             <div class="question-number">1</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-1"></span>
         </div>
-        <div class="question-text">
-            Que es un LLM (Large Language Model)?
-        </div>
+        <div class="question-text">Que es un LLM (Large Language Model)?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q1" value="a">
-                <span class="option-text">A) Un programa que piensa y razona como un humano</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q1" value="b">
-                <span class="option-text">B) Un modelo que predice la siguiente palabra mas probable basandose en patrones estadisticos</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q1" value="c">
-                <span class="option-text">C) Una base de datos que almacena todas las respuestas posibles</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q1" value="d">
-                <span class="option-text">D) Un buscador de internet mas avanzado</span>
-            </label>
+            <label class="option"><input type="radio" name="q1" value="a"><span class="option-text">A) Un programa que piensa y razona como un humano</span></label>
+            <label class="option"><input type="radio" name="q1" value="b"><span class="option-text">B) Un modelo que predice la siguiente palabra mas probable basandose en patrones estadisticos</span></label>
+            <label class="option"><input type="radio" name="q1" value="c"><span class="option-text">C) Una base de datos que almacena todas las respuestas posibles</span></label>
+            <label class="option"><input type="radio" name="q1" value="d"><span class="option-text">D) Un buscador de internet mas avanzado</span></label>
         </div>
+        <div class="feedback" id="feedback-1"></div>
     </div>
 
     <!-- PREGUNTA 2 -->
-    <div class="question-card">
+    <div class="question-card" data-question="2">
         <div class="question-header">
             <div class="question-number">2</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-2"></span>
         </div>
-        <div class="question-text">
-            Cuales son las 4 partes de un prompt efectivo?
-        </div>
+        <div class="question-text">Cuales son las 4 partes de un prompt efectivo?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q2" value="a">
-                <span class="option-text">A) Pregunta, Respuesta, Verificacion, Conclusion</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q2" value="b">
-                <span class="option-text">B) Rol, Contexto, Tarea, Formato</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q2" value="c">
-                <span class="option-text">C) Introduccion, Desarrollo, Climax, Desenlace</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q2" value="d">
-                <span class="option-text">D) Usuario, Sistema, Asistente, Modelo</span>
-            </label>
+            <label class="option"><input type="radio" name="q2" value="a"><span class="option-text">A) Pregunta, Respuesta, Verificacion, Conclusion</span></label>
+            <label class="option"><input type="radio" name="q2" value="b"><span class="option-text">B) Rol, Contexto, Tarea, Formato</span></label>
+            <label class="option"><input type="radio" name="q2" value="c"><span class="option-text">C) Introduccion, Desarrollo, Climax, Desenlace</span></label>
+            <label class="option"><input type="radio" name="q2" value="d"><span class="option-text">D) Usuario, Sistema, Asistente, Modelo</span></label>
         </div>
+        <div class="feedback" id="feedback-2"></div>
     </div>
 
     <!-- PREGUNTA 3 -->
-    <div class="question-card">
+    <div class="question-card" data-question="3">
         <div class="question-header">
             <div class="question-number">3</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-3"></span>
         </div>
-        <div class="question-text">
-            Que es una "alucinacion" en el contexto de la IA?
-        </div>
+        <div class="question-text">Que es una "alucinacion" en el contexto de la IA?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q3" value="a">
-                <span class="option-text">A) Cuando la IA se confunde y deja de funcionar</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q3" value="b">
-                <span class="option-text">B) Cuando la IA genera informacion falsa o inventada que suena convincente</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q3" value="c">
-                <span class="option-text">C) Cuando la IA muestra imagenes distorsionadas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q3" value="d">
-                <span class="option-text">D) Cuando la IA tarda mucho en responder</span>
-            </label>
+            <label class="option"><input type="radio" name="q3" value="a"><span class="option-text">A) Cuando la IA se confunde y deja de funcionar</span></label>
+            <label class="option"><input type="radio" name="q3" value="b"><span class="option-text">B) Cuando la IA genera informacion falsa o inventada que suena convincente</span></label>
+            <label class="option"><input type="radio" name="q3" value="c"><span class="option-text">C) Cuando la IA muestra imagenes distorsionadas</span></label>
+            <label class="option"><input type="radio" name="q3" value="d"><span class="option-text">D) Cuando la IA tarda mucho en responder</span></label>
         </div>
+        <div class="feedback" id="feedback-3"></div>
     </div>
 
     <!-- PREGUNTA 4 -->
-    <div class="question-card">
+    <div class="question-card" data-question="4">
         <div class="question-header">
             <div class="question-number">4</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-4"></span>
         </div>
-        <div class="question-text">
-            Que es un "token" en el contexto de los LLMs?
-        </div>
+        <div class="question-text">Que es un "token" en el contexto de los LLMs?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q4" value="a">
-                <span class="option-text">A) Una moneda virtual para pagar el servicio de IA</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q4" value="b">
-                <span class="option-text">B) La unidad minima de texto que procesa el modelo (aproximadamente 4 caracteres)</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q4" value="c">
-                <span class="option-text">C) Una contrasena para acceder al sistema</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q4" value="d">
-                <span class="option-text">D) El nombre de una version especifica de ChatGPT</span>
-            </label>
+            <label class="option"><input type="radio" name="q4" value="a"><span class="option-text">A) Una moneda virtual para pagar el servicio de IA</span></label>
+            <label class="option"><input type="radio" name="q4" value="b"><span class="option-text">B) La unidad minima de texto que procesa el modelo (aproximadamente 4 caracteres)</span></label>
+            <label class="option"><input type="radio" name="q4" value="c"><span class="option-text">C) Una contrasena para acceder al sistema</span></label>
+            <label class="option"><input type="radio" name="q4" value="d"><span class="option-text">D) El nombre de una version especifica de ChatGPT</span></label>
         </div>
+        <div class="feedback" id="feedback-4"></div>
     </div>
 
     <!-- PREGUNTA 5 -->
-    <div class="question-card">
+    <div class="question-card" data-question="5">
         <div class="question-header">
             <div class="question-number">5</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-5"></span>
         </div>
-        <div class="question-text">
-            Si la temperatura de un modelo esta en 0.1, que tipo de respuestas dara?
-        </div>
+        <div class="question-text">Si la temperatura de un modelo esta en 0.1, que tipo de respuestas dara?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q5" value="a">
-                <span class="option-text">A) Respuestas muy creativas y variadas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q5" value="b">
-                <span class="option-text">B) Respuestas mas precisas y consistentes</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q5" value="c">
-                <span class="option-text">C) Respuestas muy largas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q5" value="d">
-                <span class="option-text">D) Respuestas en otros idiomas</span>
-            </label>
+            <label class="option"><input type="radio" name="q5" value="a"><span class="option-text">A) Respuestas muy creativas y variadas</span></label>
+            <label class="option"><input type="radio" name="q5" value="b"><span class="option-text">B) Respuestas mas precisas y consistentes</span></label>
+            <label class="option"><input type="radio" name="q5" value="c"><span class="option-text">C) Respuestas muy largas</span></label>
+            <label class="option"><input type="radio" name="q5" value="d"><span class="option-text">D) Respuestas en otros idiomas</span></label>
         </div>
+        <div class="feedback" id="feedback-5"></div>
     </div>
 
     <!-- PREGUNTA 6 -->
-    <div class="question-card">
+    <div class="question-card" data-question="6">
         <div class="question-header">
             <div class="question-number">6</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-6"></span>
         </div>
-        <div class="question-text">
-            Que es "Chain of Thought" (Cadena de Pensamiento)?
-        </div>
+        <div class="question-text">Que es "Chain of Thought" (Cadena de Pensamiento)?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q6" value="a">
-                <span class="option-text">A) Una tecnica para hacer que la IA piense paso a paso antes de responder</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q6" value="b">
-                <span class="option-text">B) Una cadena de bloques para seguridad</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q6" value="c">
-                <span class="option-text">C) Un tipo de red neuronal</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q6" value="d">
-                <span class="option-text">D) Una forma de conectar multiples IAs</span>
-            </label>
+            <label class="option"><input type="radio" name="q6" value="a"><span class="option-text">A) Una tecnica para hacer que la IA piense paso a paso antes de responder</span></label>
+            <label class="option"><input type="radio" name="q6" value="b"><span class="option-text">B) Una cadena de bloques para seguridad</span></label>
+            <label class="option"><input type="radio" name="q6" value="c"><span class="option-text">C) Un tipo de red neuronal</span></label>
+            <label class="option"><input type="radio" name="q6" value="d"><span class="option-text">D) Una forma de conectar multiples IAs</span></label>
         </div>
+        <div class="feedback" id="feedback-6"></div>
     </div>
 
     <!-- PREGUNTA 7 -->
-    <div class="question-card">
+    <div class="question-card" data-question="7">
         <div class="question-header">
             <div class="question-number">7</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-7"></span>
         </div>
-        <div class="question-text">
-            Cual de estas NO es una limitacion real de los LLMs actuales?
-        </div>
+        <div class="question-text">Cual de estas NO es una limitacion real de los LLMs actuales?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q7" value="a">
-                <span class="option-text">A) No pueden acceder a informacion en tiempo real (sin herramientas externas)</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q7" value="b">
-                <span class="option-text">B) Pueden equivocarse en calculos matematicos</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q7" value="c">
-                <span class="option-text">C) No pueden leer ni entender texto en espaniol</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q7" value="d">
-                <span class="option-text">D) Pueden generar informacion falsa (alucinaciones)</span>
-            </label>
+            <label class="option"><input type="radio" name="q7" value="a"><span class="option-text">A) No pueden acceder a informacion en tiempo real (sin herramientas externas)</span></label>
+            <label class="option"><input type="radio" name="q7" value="b"><span class="option-text">B) Pueden equivocarse en calculos matematicos</span></label>
+            <label class="option"><input type="radio" name="q7" value="c"><span class="option-text">C) No pueden leer ni entender texto en espaniol</span></label>
+            <label class="option"><input type="radio" name="q7" value="d"><span class="option-text">D) Pueden generar informacion falsa (alucinaciones)</span></label>
         </div>
+        <div class="feedback" id="feedback-7"></div>
     </div>
 
     <!-- PREGUNTA 8 -->
-    <div class="question-card">
+    <div class="question-card" data-question="8">
         <div class="question-header">
             <div class="question-number">8</div>
             <span class="question-type type-practica">PRACTICA</span>
+            <span class="question-status" id="status-8"></span>
         </div>
-        <div class="question-text">
-            Cual de estos es un ejemplo de prompt "Few-Shot"?
-        </div>
+        <div class="question-text">Cual de estos es un ejemplo de prompt "Few-Shot"?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q8" value="a">
-                <span class="option-text">A) "Traduce esto al ingles: Hola mundo"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q8" value="b">
-                <span class="option-text">B) "Clasifica: 'Excelente servicio' → Positivo. 'Pesimo' → Negativo. 'Esta bien' → ?"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q8" value="c">
-                <span class="option-text">C) "Piensa paso a paso antes de responder"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q8" value="d">
-                <span class="option-text">D) "Eres un experto en marketing"</span>
-            </label>
+            <label class="option"><input type="radio" name="q8" value="a"><span class="option-text">A) "Traduce esto al ingles: Hola mundo"</span></label>
+            <label class="option"><input type="radio" name="q8" value="b"><span class="option-text">B) "Clasifica: 'Excelente servicio' → Positivo. 'Pesimo' → Negativo. 'Esta bien' → ?"</span></label>
+            <label class="option"><input type="radio" name="q8" value="c"><span class="option-text">C) "Piensa paso a paso antes de responder"</span></label>
+            <label class="option"><input type="radio" name="q8" value="d"><span class="option-text">D) "Eres un experto en marketing"</span></label>
         </div>
+        <div class="feedback" id="feedback-8"></div>
     </div>
 
     <!-- PREGUNTA 9 -->
-    <div class="question-card">
+    <div class="question-card" data-question="9">
         <div class="question-header">
             <div class="question-number">9</div>
             <span class="question-type type-gemini">USA GEMINI</span>
+            <span class="question-status" id="status-9"></span>
         </div>
         <div class="question-text">
             Usa Gemini con Chain of Thought para resolver:<br><br>
             "Un tren sale de la ciudad A a las 8:00 AM viajando a 80 km/h. Otro tren sale de la ciudad B (que esta a 400 km de A) a las 9:00 AM viajando hacia A a 120 km/h. A que hora se cruzan?"
         </div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q9" value="a">
-                <span class="option-text">A) 10:30 AM</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q9" value="b">
-                <span class="option-text">B) 11:00 AM</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q9" value="c">
-                <span class="option-text">C) 10:36 AM</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q9" value="d">
-                <span class="option-text">D) 11:36 AM</span>
-            </label>
+            <label class="option"><input type="radio" name="q9" value="a"><span class="option-text">A) 10:30 AM</span></label>
+            <label class="option"><input type="radio" name="q9" value="b"><span class="option-text">B) 11:00 AM</span></label>
+            <label class="option"><input type="radio" name="q9" value="c"><span class="option-text">C) 10:36 AM</span></label>
+            <label class="option"><input type="radio" name="q9" value="d"><span class="option-text">D) 11:36 AM</span></label>
         </div>
-        <div class="hint">
-            <div class="hint-title">Consejo:</div>
-            <p>Usa el prompt: "Piensa paso a paso. Define las variables, plantea las ecuaciones, y muestra cada calculo."</p>
-        </div>
+        <div class="hint"><div class="hint-title">Consejo:</div><p>Usa el prompt: "Piensa paso a paso. Define las variables, plantea las ecuaciones, y muestra cada calculo."</p></div>
+        <div class="feedback" id="feedback-9"></div>
     </div>
 
     <!-- PREGUNTA 10 -->
-    <div class="question-card">
+    <div class="question-card" data-question="10">
         <div class="question-header">
             <div class="question-number">10</div>
             <span class="question-type type-gemini">USA GEMINI</span>
+            <span class="question-status" id="status-10"></span>
         </div>
         <div class="question-text">
             Pide a Gemini que "actue como un experto en ciberseguridad" y preguntale:<br>
@@ -544,155 +512,92 @@
             Cual de estas combinaciones es la mas precisa segun la respuesta de Gemini?
         </div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q10" value="a">
-                <span class="option-text">A) Virus, Gusanos, Caballos de Troya</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q10" value="b">
-                <span class="option-text">B) Ransomware, Phishing, Spyware</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q10" value="c">
-                <span class="option-text">C) Cookies, Pop-ups, Spam</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q10" value="d">
-                <span class="option-text">D) Firewall, Antivirus, VPN</span>
-            </label>
+            <label class="option"><input type="radio" name="q10" value="a"><span class="option-text">A) Virus, Gusanos, Caballos de Troya</span></label>
+            <label class="option"><input type="radio" name="q10" value="b"><span class="option-text">B) Ransomware, Phishing, Spyware</span></label>
+            <label class="option"><input type="radio" name="q10" value="c"><span class="option-text">C) Cookies, Pop-ups, Spam</span></label>
+            <label class="option"><input type="radio" name="q10" value="d"><span class="option-text">D) Firewall, Antivirus, VPN</span></label>
         </div>
-        <div class="hint">
-            <div class="hint-title">Consejo:</div>
-            <p>Usa ROL + TAREA. Si Gemini menciona "ransomware", esa suele ser la respuesta correcta.</p>
-        </div>
+        <div class="feedback" id="feedback-10"></div>
     </div>
 
     <!-- PREGUNTA 11 -->
-    <div class="question-card">
+    <div class="question-card" data-question="11">
         <div class="question-header">
             <div class="question-number">11</div>
             <span class="question-type type-practica">PRACTICA</span>
+            <span class="question-status" id="status-11"></span>
         </div>
-        <div class="question-text">
-            Que frase usarias para activar "Chain of Thought" en un prompt?
-        </div>
+        <div class="question-text">Que frase usarias para activar "Chain of Thought" en un prompt?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q11" value="a">
-                <span class="option-text">A) "Dame la respuesta rapida"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q11" value="b">
-                <span class="option-text">B) "Piensa paso a paso antes de responder"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q11" value="c">
-                <span class="option-text">C) "Usa internet para buscar"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q11" value="d">
-                <span class="option-text">D) "Responde en formato JSON"</span>
-            </label>
+            <label class="option"><input type="radio" name="q11" value="a"><span class="option-text">A) "Dame la respuesta rapida"</span></label>
+            <label class="option"><input type="radio" name="q11" value="b"><span class="option-text">B) "Piensa paso a paso antes de responder"</span></label>
+            <label class="option"><input type="radio" name="q11" value="c"><span class="option-text">C) "Usa internet para buscar"</span></label>
+            <label class="option"><input type="radio" name="q11" value="d"><span class="option-text">D) "Responde en formato JSON"</span></label>
         </div>
+        <div class="feedback" id="feedback-11"></div>
     </div>
 
     <!-- PREGUNTA 12 -->
-    <div class="question-card">
+    <div class="question-card" data-question="12">
         <div class="question-header">
             <div class="question-number">12</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-12"></span>
         </div>
-        <div class="question-text">
-            Que es el "contexto" o "context window" de un LLM?
-        </div>
+        <div class="question-text">Que es el "contexto" o "context window" de un LLM?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q12" value="a">
-                <span class="option-text">A) La pantalla donde aparece la conversacion</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q12" value="b">
-                <span class="option-text">B) La cantidad de texto que el modelo puede "ver" y recordar al mismo tiempo</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q12" value="c">
-                <span class="option-text">C) El tema general de la conversacion</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q12" value="d">
-                <span class="option-text">D) El idioma en que esta configurado el modelo</span>
-            </label>
+            <label class="option"><input type="radio" name="q12" value="a"><span class="option-text">A) La pantalla donde aparece la conversacion</span></label>
+            <label class="option"><input type="radio" name="q12" value="b"><span class="option-text">B) La cantidad de texto que el modelo puede "ver" y recordar al mismo tiempo</span></label>
+            <label class="option"><input type="radio" name="q12" value="c"><span class="option-text">C) El tema general de la conversacion</span></label>
+            <label class="option"><input type="radio" name="q12" value="d"><span class="option-text">D) El idioma en que esta configurado el modelo</span></label>
         </div>
+        <div class="feedback" id="feedback-12"></div>
     </div>
 
     <!-- PREGUNTA 13 -->
-    <div class="question-card">
+    <div class="question-card" data-question="13">
         <div class="question-header">
             <div class="question-number">13</div>
             <span class="question-type type-gemini">USA GEMINI</span>
+            <span class="question-status" id="status-13"></span>
         </div>
         <div class="question-text">
             Pregunta a Gemini: "Quien escribio el libro 'El algoritmo del destino' publicado en 2018?"<br><br>
             Que deberias hacer con la respuesta?
         </div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q13" value="a">
-                <span class="option-text">A) Confiar completamente porque Gemini siempre es preciso</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q13" value="b">
-                <span class="option-text">B) Verificar en Google si el libro y autor existen realmente (puede ser alucinacion)</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q13" value="c">
-                <span class="option-text">C) Asumir que es correcto si suena convincente</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q13" value="d">
-                <span class="option-text">D) Ignorar la respuesta porque Gemini no sabe de libros</span>
-            </label>
+            <label class="option"><input type="radio" name="q13" value="a"><span class="option-text">A) Confiar completamente porque Gemini siempre es preciso</span></label>
+            <label class="option"><input type="radio" name="q13" value="b"><span class="option-text">B) Verificar en Google si el libro y autor existen realmente (puede ser alucinacion)</span></label>
+            <label class="option"><input type="radio" name="q13" value="c"><span class="option-text">C) Asumir que es correcto si suena convincente</span></label>
+            <label class="option"><input type="radio" name="q13" value="d"><span class="option-text">D) Ignorar la respuesta porque Gemini no sabe de libros</span></label>
         </div>
-        <div class="hint">
-            <div class="hint-title">Pista:</div>
-            <p>Prueba a buscar ese libro en Google o Amazon. Existe realmente?</p>
-        </div>
+        <div class="hint"><div class="hint-title">Pista:</div><p>Prueba a buscar ese libro en Google o Amazon. Existe realmente?</p></div>
+        <div class="feedback" id="feedback-13"></div>
     </div>
 
     <!-- PREGUNTA 14 -->
-    <div class="question-card">
+    <div class="question-card" data-question="14">
         <div class="question-header">
             <div class="question-number">14</div>
             <span class="question-type type-practica">PRACTICA</span>
+            <span class="question-status" id="status-14"></span>
         </div>
-        <div class="question-text">
-            Cual de estos prompts es MEJOR para obtener una respuesta util?
-        </div>
+        <div class="question-text">Cual de estos prompts es MEJOR para obtener una respuesta util?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q14" value="a">
-                <span class="option-text">A) "Dime sobre Python"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q14" value="b">
-                <span class="option-text">B) "Escribe codigo"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q14" value="c">
-                <span class="option-text">C) "Actua como un instructor de Python. Soy principiante. Explicame que son las listas con 3 ejemplos simples."</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q14" value="d">
-                <span class="option-text">D) "Python listas ejemplos codigo"</span>
-            </label>
+            <label class="option"><input type="radio" name="q14" value="a"><span class="option-text">A) "Dime sobre Python"</span></label>
+            <label class="option"><input type="radio" name="q14" value="b"><span class="option-text">B) "Escribe codigo"</span></label>
+            <label class="option"><input type="radio" name="q14" value="c"><span class="option-text">C) "Actua como un instructor de Python. Soy principiante. Explicame que son las listas con 3 ejemplos simples."</span></label>
+            <label class="option"><input type="radio" name="q14" value="d"><span class="option-text">D) "Python listas ejemplos codigo"</span></label>
         </div>
+        <div class="feedback" id="feedback-14"></div>
     </div>
 
     <!-- PREGUNTA 15 -->
-    <div class="question-card">
+    <div class="question-card" data-question="15">
         <div class="question-header">
             <div class="question-number">15</div>
             <span class="question-type type-gemini">USA GEMINI</span>
+            <span class="question-status" id="status-15"></span>
         </div>
         <div class="question-text">
             Usa Gemini con este prompt exacto:<br>
@@ -703,59 +608,37 @@ En total hay 35 manzanas. Cuantas tiene cada caja?"</div>
             Cuantas manzanas tiene la SEGUNDA caja?
         </div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q15" value="a">
-                <span class="option-text">A) 8 manzanas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q15" value="b">
-                <span class="option-text">B) 10 manzanas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q15" value="c">
-                <span class="option-text">C) 16 manzanas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q15" value="d">
-                <span class="option-text">D) 11 manzanas</span>
-            </label>
+            <label class="option"><input type="radio" name="q15" value="a"><span class="option-text">A) 8 manzanas</span></label>
+            <label class="option"><input type="radio" name="q15" value="b"><span class="option-text">B) 10 manzanas</span></label>
+            <label class="option"><input type="radio" name="q15" value="c"><span class="option-text">C) 16 manzanas</span></label>
+            <label class="option"><input type="radio" name="q15" value="d"><span class="option-text">D) 11 manzanas</span></label>
         </div>
+        <div class="feedback" id="feedback-15"></div>
     </div>
 
     <!-- PREGUNTA 16 -->
-    <div class="question-card">
+    <div class="question-card" data-question="16">
         <div class="question-header">
             <div class="question-number">16</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-16"></span>
         </div>
-        <div class="question-text">
-            Por que es importante especificar el FORMATO en un prompt?
-        </div>
+        <div class="question-text">Por que es importante especificar el FORMATO en un prompt?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q16" value="a">
-                <span class="option-text">A) Para que la IA responda mas rapido</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q16" value="b">
-                <span class="option-text">B) Para obtener la respuesta en la estructura que necesitas (lista, tabla, parrafos, etc.)</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q16" value="c">
-                <span class="option-text">C) Para que la IA use menos tokens</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q16" value="d">
-                <span class="option-text">D) El formato no afecta la respuesta</span>
-            </label>
+            <label class="option"><input type="radio" name="q16" value="a"><span class="option-text">A) Para que la IA responda mas rapido</span></label>
+            <label class="option"><input type="radio" name="q16" value="b"><span class="option-text">B) Para obtener la respuesta en la estructura que necesitas (lista, tabla, parrafos, etc.)</span></label>
+            <label class="option"><input type="radio" name="q16" value="c"><span class="option-text">C) Para que la IA use menos tokens</span></label>
+            <label class="option"><input type="radio" name="q16" value="d"><span class="option-text">D) El formato no afecta la respuesta</span></label>
         </div>
+        <div class="feedback" id="feedback-16"></div>
     </div>
 
     <!-- PREGUNTA 17 -->
-    <div class="question-card">
+    <div class="question-card" data-question="17">
         <div class="question-header">
             <div class="question-number">17</div>
             <span class="question-type type-gemini">USA GEMINI</span>
+            <span class="question-status" id="status-17"></span>
         </div>
         <div class="question-text">
             Pide a Gemini:<br>
@@ -764,59 +647,37 @@ en maximo 3 oraciones simples."</div>
             Cual es la caracteristica PRINCIPAL del phishing segun Gemini?
         </div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q17" value="a">
-                <span class="option-text">A) Es un virus que destruye archivos</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q17" value="b">
-                <span class="option-text">B) Es un engaño que intenta robar informacion haciendose pasar por entidades legitimas</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q17" value="c">
-                <span class="option-text">C) Es un tipo de hardware malicioso</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q17" value="d">
-                <span class="option-text">D) Es un ataque que solo afecta a servidores</span>
-            </label>
+            <label class="option"><input type="radio" name="q17" value="a"><span class="option-text">A) Es un virus que destruye archivos</span></label>
+            <label class="option"><input type="radio" name="q17" value="b"><span class="option-text">B) Es un engaño que intenta robar informacion haciendose pasar por entidades legitimas</span></label>
+            <label class="option"><input type="radio" name="q17" value="c"><span class="option-text">C) Es un tipo de hardware malicioso</span></label>
+            <label class="option"><input type="radio" name="q17" value="d"><span class="option-text">D) Es un ataque que solo afecta a servidores</span></label>
         </div>
+        <div class="feedback" id="feedback-17"></div>
     </div>
 
     <!-- PREGUNTA 18 -->
-    <div class="question-card">
+    <div class="question-card" data-question="18">
         <div class="question-header">
             <div class="question-number">18</div>
             <span class="question-type type-practica">PRACTICA</span>
+            <span class="question-status" id="status-18"></span>
         </div>
-        <div class="question-text">
-            Como puedes reducir las alucinaciones cuando usas Gemini?
-        </div>
+        <div class="question-text">Como puedes reducir las alucinaciones cuando usas Gemini?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q18" value="a">
-                <span class="option-text">A) Usar prompts mas cortos</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q18" value="b">
-                <span class="option-text">B) Pedirle que cite fuentes verificables y decirle "si no estas seguro, dimelo"</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q18" value="c">
-                <span class="option-text">C) Usar solo preguntas de si/no</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q18" value="d">
-                <span class="option-text">D) Escribir todo en mayusculas</span>
-            </label>
+            <label class="option"><input type="radio" name="q18" value="a"><span class="option-text">A) Usar prompts mas cortos</span></label>
+            <label class="option"><input type="radio" name="q18" value="b"><span class="option-text">B) Pedirle que cite fuentes verificables y decirle "si no estas seguro, dimelo"</span></label>
+            <label class="option"><input type="radio" name="q18" value="c"><span class="option-text">C) Usar solo preguntas de si/no</span></label>
+            <label class="option"><input type="radio" name="q18" value="d"><span class="option-text">D) Escribir todo en mayusculas</span></label>
         </div>
+        <div class="feedback" id="feedback-18"></div>
     </div>
 
     <!-- PREGUNTA 19 -->
-    <div class="question-card">
+    <div class="question-card" data-question="19">
         <div class="question-header">
             <div class="question-number">19</div>
             <span class="question-type type-gemini">USA GEMINI</span>
+            <span class="question-status" id="status-19"></span>
         </div>
         <div class="question-text">
             Usa Gemini para convertir este texto en una lista de 3 tareas:<br>
@@ -826,76 +687,244 @@ comprar pan en la panaderia de la esquina."</div>
             Cual es la SEGUNDA tarea de la lista?
         </div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q19" value="a">
-                <span class="option-text">A) Depositar el cheque en el banco</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q19" value="b">
-                <span class="option-text">B) Recoger medicina en la farmacia</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q19" value="c">
-                <span class="option-text">C) Comprar pan</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q19" value="d">
-                <span class="option-text">D) Visitar a la abuela</span>
-            </label>
+            <label class="option"><input type="radio" name="q19" value="a"><span class="option-text">A) Depositar el cheque en el banco</span></label>
+            <label class="option"><input type="radio" name="q19" value="b"><span class="option-text">B) Recoger medicina en la farmacia</span></label>
+            <label class="option"><input type="radio" name="q19" value="c"><span class="option-text">C) Comprar pan</span></label>
+            <label class="option"><input type="radio" name="q19" value="d"><span class="option-text">D) Visitar a la abuela</span></label>
         </div>
+        <div class="feedback" id="feedback-19"></div>
     </div>
 
     <!-- PREGUNTA 20 -->
-    <div class="question-card">
+    <div class="question-card" data-question="20">
         <div class="question-header">
             <div class="question-number">20</div>
             <span class="question-type type-teoria">TEORIA</span>
+            <span class="question-status" id="status-20"></span>
         </div>
-        <div class="question-text">
-            Cual es la "regla de oro" al usar herramientas de IA como Gemini?
-        </div>
+        <div class="question-text">Cual es la "regla de oro" al usar herramientas de IA como Gemini?</div>
         <div class="options">
-            <label class="option">
-                <input type="radio" name="q20" value="a">
-                <span class="option-text">A) La IA es perfecta y nunca se equivoca</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q20" value="b">
-                <span class="option-text">B) La IA es una herramienta que potencia tu trabajo, pero la responsabilidad final es tuya</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q20" value="c">
-                <span class="option-text">C) La IA reemplaza completamente el pensamiento humano</span>
-            </label>
-            <label class="option">
-                <input type="radio" name="q20" value="d">
-                <span class="option-text">D) Nunca debes usar IA para tareas importantes</span>
-            </label>
+            <label class="option"><input type="radio" name="q20" value="a"><span class="option-text">A) La IA es perfecta y nunca se equivoca</span></label>
+            <label class="option"><input type="radio" name="q20" value="b"><span class="option-text">B) La IA es una herramienta que potencia tu trabajo, pero la responsabilidad final es tuya</span></label>
+            <label class="option"><input type="radio" name="q20" value="c"><span class="option-text">C) La IA reemplaza completamente el pensamiento humano</span></label>
+            <label class="option"><input type="radio" name="q20" value="d"><span class="option-text">D) Nunca debes usar IA para tareas importantes</span></label>
         </div>
-    </div>
-
-    <!-- ENTREGA -->
-    <div class="submit-section">
-        <h3>📤 Entrega del Quiz</h3>
-        <p>Cuando termines, entrega lo siguiente:</p>
-
-        <div class="entrega-list">
-            <ol>
-                <li><strong>Documento con tus respuestas:</strong> Lista del 1 al 20 con tu respuesta (A, B, C, o D)</li>
-                <li><strong>Screenshots de Gemini:</strong> Para las preguntas 9, 10, 13, 15, 17, y 19 (las marcadas como "USA GEMINI")</li>
-                <li><strong>Reflexion final:</strong> En 2-3 oraciones, que aprendiste sobre como usar Gemini efectivamente?</li>
-            </ol>
-        </div>
-
-        <p><strong>Puntaje para aprobar: 16/20 (80%)</strong></p>
+        <div class="feedback" id="feedback-20"></div>
     </div>
 
 </main>
 
 <footer class="footer">
-    <p>Quiz: Fundamentos de IA y Gemini | Curso de Hilberto</p>
-    <p>Material creado por <strong>SOUL CORE</strong> — 2026</p>
+    <div class="signature">🔥💀📜🙏</div>
+    <p>Creado por <strong>Randhy Paul</strong> para <strong>Gilberto Amadis</strong></p>
+    <p>Material de <a href="https://soulcore.dev" target="_blank" style="color: var(--primary);">SOUL CORE</a> - 2026</p>
 </footer>
+
+<script>
+// Respuestas correctas
+const respuestasCorrectas = {
+    q1: 'b', q2: 'b', q3: 'b', q4: 'b', q5: 'b',
+    q6: 'a', q7: 'c', q8: 'b', q9: 'c', q10: 'b',
+    q11: 'b', q12: 'b', q13: 'b', q14: 'c', q15: 'a',
+    q16: 'b', q17: 'b', q18: 'b', q19: 'b', q20: 'b'
+};
+
+// Explicaciones
+const explicaciones = {
+    q1: "Un LLM predice la siguiente palabra basándose en patrones estadísticos aprendidos de grandes cantidades de texto.",
+    q2: "ROL + CONTEXTO + TAREA + FORMATO es la fórmula para prompts efectivos.",
+    q3: "Las alucinaciones son información falsa o inventada que suena convincente pero no es real.",
+    q4: "Un token es aproximadamente 4 caracteres - la unidad mínima que procesa el modelo.",
+    q5: "Temperatura baja (0.1) = respuestas más precisas y consistentes. Temperatura alta = más creatividad.",
+    q6: "Chain of Thought hace que la IA razone paso a paso, mejorando la precisión en problemas complejos.",
+    q7: "Los LLMs SÍ pueden entender español perfectamente. Esa NO es una limitación real.",
+    q8: "Few-Shot muestra ejemplos de entrada→salida antes de la pregunta real.",
+    q9: "Con Chain of Thought: Tren A recorre 80km en la primera hora. A las 9AM están a 320km. Velocidad relativa=200km/h. Tiempo=1.6h=96min. 9:00+1:36=10:36 AM",
+    q10: "En 2026, los malware más comunes incluyen Ransomware, técnicas de Phishing y Spyware.",
+    q11: "'Piensa paso a paso' es la frase mágica para activar Chain of Thought.",
+    q12: "El context window es cuánto texto puede 'ver' el modelo al mismo tiempo.",
+    q13: "SIEMPRE verifica información específica como libros/autores - puede ser alucinación.",
+    q14: "El prompt C usa ROL + CONTEXTO + TAREA + FORMATO correctamente.",
+    q15: "Segunda caja = 8 manzanas (Primera=16, Segunda=8, Tercera=11, Total=35).",
+    q16: "El FORMATO te da la respuesta en la estructura que necesitas (lista, tabla, párrafos).",
+    q17: "Phishing es un ENGAÑO que suplanta entidades legítimas para robar información.",
+    q18: "Pedir fuentes y permitir que admita incertidumbre reduce alucinaciones.",
+    q19: "Las tareas en orden: 1)Banco 2)Farmacia 3)Panadería. La segunda es la farmacia.",
+    q20: "La IA potencia tu trabajo, pero TÚ eres responsable de verificar y decidir."
+};
+
+// Cargar progreso guardado
+function cargarProgreso() {
+    const guardado = localStorage.getItem('quizGeminiProgreso');
+    if (guardado) {
+        const datos = JSON.parse(guardado);
+        for (let i = 1; i <= 20; i++) {
+            const respuesta = datos[`q${i}`];
+            if (respuesta) {
+                const radio = document.querySelector(`input[name="q${i}"][value="${respuesta}"]`);
+                if (radio) {
+                    radio.checked = true;
+                    radio.closest('.option').classList.add('selected');
+                }
+            }
+        }
+        actualizarProgreso();
+    }
+}
+
+// Guardar progreso
+function guardarProgreso() {
+    const datos = {};
+    for (let i = 1; i <= 20; i++) {
+        const seleccionada = document.querySelector(`input[name="q${i}"]:checked`);
+        if (seleccionada) {
+            datos[`q${i}`] = seleccionada.value;
+        }
+    }
+    localStorage.setItem('quizGeminiProgreso', JSON.stringify(datos));
+    alert('✓ Progreso guardado! Puedes cerrar y volver cuando quieras.');
+}
+
+// Actualizar barra de progreso
+function actualizarProgreso() {
+    let respondidas = 0;
+    for (let i = 1; i <= 20; i++) {
+        if (document.querySelector(`input[name="q${i}"]:checked`)) {
+            respondidas++;
+        }
+    }
+    const porcentaje = (respondidas / 20) * 100;
+    document.getElementById('progressFill').style.width = porcentaje + '%';
+    document.getElementById('progressText').textContent = `${respondidas} de 20 preguntas respondidas`;
+}
+
+// Verificar respuestas
+function verificarRespuestas() {
+    let correctas = 0;
+
+    for (let i = 1; i <= 20; i++) {
+        const seleccionada = document.querySelector(`input[name="q${i}"]:checked`);
+        const card = document.querySelector(`[data-question="${i}"]`);
+        const feedback = document.getElementById(`feedback-${i}`);
+        const status = document.getElementById(`status-${i}`);
+
+        // Resetear clases
+        card.classList.remove('correct', 'incorrect');
+        card.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('correct-answer', 'wrong-answer');
+        });
+
+        if (seleccionada) {
+            const esCorrecta = seleccionada.value === respuestasCorrectas[`q${i}`];
+
+            if (esCorrecta) {
+                correctas++;
+                card.classList.add('correct');
+                seleccionada.closest('.option').classList.add('correct-answer');
+                status.textContent = '✅';
+                feedback.className = 'feedback show correct';
+                feedback.innerHTML = `<strong>✓ Correcto!</strong> ${explicaciones[`q${i}`]}`;
+            } else {
+                card.classList.add('incorrect');
+                seleccionada.closest('.option').classList.add('wrong-answer');
+                // Mostrar la correcta
+                const correctaOpt = document.querySelector(`input[name="q${i}"][value="${respuestasCorrectas[`q${i}`]}"]`);
+                correctaOpt.closest('.option').classList.add('correct-answer');
+                status.textContent = '❌';
+                feedback.className = 'feedback show incorrect';
+                feedback.innerHTML = `<strong>✗ Incorrecto.</strong> ${explicaciones[`q${i}`]}`;
+            }
+        } else {
+            status.textContent = '⚪';
+            feedback.className = 'feedback show incorrect';
+            feedback.innerHTML = `<strong>Sin responder.</strong> La respuesta correcta es: ${respuestasCorrectas[`q${i}`].toUpperCase()}. ${explicaciones[`q${i}`]}`;
+        }
+    }
+
+    // Actualizar panel de puntuación
+    const panel = document.getElementById('scorePanel');
+    const display = document.getElementById('scoreDisplay');
+    const message = document.getElementById('scoreMessage');
+
+    display.textContent = `${correctas}/20`;
+
+    if (correctas >= 16) {
+        panel.className = 'score-panel passed';
+        display.className = 'score-display passed';
+        message.innerHTML = `🎉 <strong>APROBADO!</strong> Excelente dominio de los conceptos.`;
+    } else {
+        panel.className = 'score-panel failed';
+        display.className = 'score-display failed';
+        message.innerHTML = `📚 Necesitas 16/20 para aprobar. Revisa las respuestas incorrectas y vuelve a intentar.`;
+    }
+
+    // Scroll al panel
+    panel.scrollIntoView({ behavior: 'smooth' });
+
+    // Guardar automáticamente
+    guardarProgreso();
+}
+
+// Reiniciar quiz
+function reiniciarQuiz() {
+    if (confirm('¿Seguro que quieres reiniciar? Se borrarán todas tus respuestas.')) {
+        // Limpiar localStorage
+        localStorage.removeItem('quizGeminiProgreso');
+
+        // Limpiar selecciones
+        document.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+        });
+
+        // Limpiar clases
+        document.querySelectorAll('.question-card').forEach(card => {
+            card.classList.remove('correct', 'incorrect');
+        });
+
+        document.querySelectorAll('.option').forEach(opt => {
+            opt.classList.remove('selected', 'correct-answer', 'wrong-answer');
+        });
+
+        document.querySelectorAll('.feedback').forEach(fb => {
+            fb.className = 'feedback';
+            fb.innerHTML = '';
+        });
+
+        for (let i = 1; i <= 20; i++) {
+            document.getElementById(`status-${i}`).textContent = '';
+        }
+
+        // Resetear panel
+        const panel = document.getElementById('scorePanel');
+        panel.className = 'score-panel';
+        document.getElementById('scoreDisplay').className = 'score-display pending';
+        document.getElementById('scoreDisplay').textContent = '--/20';
+        document.getElementById('scoreMessage').textContent = 'Responde las preguntas y verifica tus respuestas';
+
+        actualizarProgreso();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    cargarProgreso();
+
+    // Actualizar progreso cuando se selecciona una opción
+    document.querySelectorAll('input[type="radio"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            // Quitar clase selected de otras opciones del mismo grupo
+            const nombre = this.name;
+            document.querySelectorAll(`input[name="${nombre}"]`).forEach(r => {
+                r.closest('.option').classList.remove('selected');
+            });
+            // Añadir a la seleccionada
+            this.closest('.option').classList.add('selected');
+            actualizarProgreso();
+        });
+    });
+});
+</script>
 
 </body>
 </html>
